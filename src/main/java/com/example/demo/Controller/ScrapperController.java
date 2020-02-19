@@ -1,8 +1,9 @@
 package com.example.demo.Controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Scrapping.Scrapper;
@@ -13,21 +14,10 @@ public class ScrapperController {
 	@Autowired
 	private Scrapper sc;
 
-	@GetMapping("/link/{url}")
-	public String getLinks(@PathVariable String url) {
-		sc.getLinks(url);
-		return "Your Request is submitted";
-	}
-
-	@GetMapping("/image/{url}")
-	public String some(@PathVariable String url) {
-		sc.fetchImages(url);
-		return "Your Request is submitted";
-	}
-
-	@GetMapping("/article")
-	public String getArticle() {
-		sc.fetchArticle();
+	@GetMapping("/article/**")
+	public String getArticle(HttpServletRequest request) {
+		String url = request.getRequestURL().toString().split("/article/")[1];
+		sc.fetchArticle(url);
 		return "Your Request is submitted";
 	}
 
